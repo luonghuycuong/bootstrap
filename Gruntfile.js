@@ -327,6 +327,13 @@ module.exports = function (grunt) {
           port: 3000,
           base: '.'
         }
+      },
+      linkChecker: {
+        options: {
+          base: '_gh_pages',
+          maxConcurrency: 20,
+          port: '<%= linkChecker.all.options.initialPort %>'
+        }
       }
     },
 
@@ -454,6 +461,15 @@ module.exports = function (grunt) {
           }
         ]
       }
+    },
+
+    linkChecker: {
+      all: {
+        site: 'localhost',
+        options: {
+          initialPort: 9900
+        }
+      }
     }
 
   });
@@ -548,6 +564,9 @@ module.exports = function (grunt) {
 
   // Publish to GitHub
   grunt.registerTask('publish', ['buildcontrol:pages']);
+
+  // linkChecker
+  grunt.registerTask('check-links', ['jekyll:docs', 'connect:linkChecker', 'linkChecker']);
 
   // Task for updating the cached npm packages used by the Travis build (which are controlled by test-infra/npm-shrinkwrap.json).
   // This task should be run and the updated file should be committed whenever Bootstrap's dependencies change.
